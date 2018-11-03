@@ -1,0 +1,171 @@
+<html>
+<head>
+<title>dtd: Processing XML DTDs in Haskell</title>
+</head>
+
+<body>
+<h2>Processing XML DTDs in Haskell</h2>
+<p>
+  The following packages, available on
+  <a href="http://hackage.haskell.org/packages/archive/pkg-list.html">
+  Hackage</a>, relate to XML Document Type Declarations (DTD) as defined
+  in
+  <a href="http://www.w3.org/XML/Core/#Publications">
+  W3C specifications</a>:
+</p>
+<dl>
+  <dt>
+    <a href="http://hackage.haskell.org/package/dtd-types" >
+    dtd-types</a>
+  </dt>
+  <dd>
+    <p>
+      This package provides types to represent a DTD.
+      It is intended to be compatible with
+      and extend the set of types in <em>Data.XML.Types</em>
+      provided by the
+      <a href="http://hackage.haskell.org/package/xml-types">xml-types</a>
+      package.
+    </p><p>
+      Following the philosophy of <em>Data.XML.Types</em>,
+      the types in this module are not intended to be a strict and
+      complete representation of the model in the W3C specifications;
+      rather, they are intended to be convenient and type-safe for the
+      kinds of processing of DTDs that are commonly done in
+      practice. As such, this model is compatible with both Version
+      1.0 and Version 1.1 of the XML specification.
+    </p><p>
+      Therefore, these types are not suitable for type-level
+      validation of the syntax of a DTD. For example: these types are
+      more lenient than the specs about the characters that are
+      allowed in various locations in a DTD; entities of various kinds
+      only appear as distinct syntactic elements in places where they
+      are commonly needed when processing DTDs; etc.
+    </p><p>
+      Conditional sections are not represented in these types. They
+      should be handled directly by parsers and renderers, if needed.
+    </p><p>
+      <table border="0">
+        <tr>
+          <td>Hackage:</td>
+          <td><a href="http://hackage.haskell.org/package/dtd-types"
+                 >http://hackage.haskell.org/package/dtd-types</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Darcs repo:&nbsp;</td>
+          <td><a href="http://code.haskell.org/dtd/dtd-types"
+                 >http://code.haskell.org/dtd/dtd-types</a>
+          </td>
+        </tr>
+      </table>
+    </p>
+  </dd>
+  <dt>
+    <a href="http://hackage.haskell.org/package/dtd-text" >
+    dtd-text</a>
+  </dt>
+  <dd>
+    <p>
+      This package provides a parser and renderer for XML DTDs. It implements
+      most of the parts of the W3C XML specification relating to DTDs.
+    </p>
+    <dl>
+      <dt><strong>Parser</strong></dt>
+      <dd>
+        <p>
+          The parser is based on
+          <a href="http://hackage.haskell.org/package/attoparsec-text">
+          attoparsec-text</a>. Parsers are provided for all of the
+          semantically important components of a DTD, and for the
+          entire DTD itself. In addition, several functions are provided that
+          parse the DTD while performing resolution of parameter entities.
+        </p><p>
+          The results of the parsers are Haskell DTD objects from the
+          <a href="http://hackage.haskell.org/package/dtd-types">dtd-types</a>
+          package.
+        </p><dl>
+          <dt>Synopsis:</dt>
+          <dd>
+            <pre>
+          -- Parse a DTD without parameter entity resolution.
+          -- See the attoparsec-text package for information
+          -- about how to use this parser.
+          dtd :: Parse DTD
+
+          -- Parse a DTD from a Data.Text.Lazy while resolving
+          -- references to internal parameter entities. If you
+          -- are not sure which interface to use, use this one.
+          dtdParse :: L.Text -> DTD
+
+          -- Parse a DTD from a Data.Text.Lazy while resolving
+          -- references to internal and external parameter entities.
+          dtdParseWithExtern :: SymTable -> L.Text -> DTD
+
+          -- where type SymTable = M.Map Text L.Text
+            </pre>
+          </dd>
+        </dl>
+        <p>
+          This parser does not attempt to go out
+          and fetch the values of external references for you from files
+          and URLs. You need to fetch them yourself and provide them to
+          the parser in a <em>SymTable</em>.
+        </p><p>
+          If you need to extract information, such as system IDs and
+          public IDs, from the DTD before you fetch external values,
+          you might be able to get them by applying parseDTD to all or
+          part of the DTD as an initial parse. The parser tries very hard
+          to give partial results when things are missing, while still doing
+          its best to avoid problems like looping references.
+        </p>
+      </dd>
+      <dt><strong>Renderer</strong></dt>
+      <dd>
+        <p>
+          The renderer is based on the
+          <a href="http://hackage.haskell.org/package/blaze-builder">
+          blaze-builder</a> package. Renderers are provided for all of the
+          semantically important components of a DTD, and for the
+          entire DTD itself.
+        </p><p>
+          The builders take as input Haskell DTD objects from the
+          <a href="http://hackage.haskell.org/package/dtd-types">dtd-types</a>
+          package.
+        </p><p>
+          See the
+          <a href="http://hackage.haskell.org/package/blaze-builder">
+          blaze-builder</a> package for information about how to use
+          these builders.
+        </p>
+      </dd>
+    </dl>
+    <p>
+      <strong>Note:</strong>
+      The current version of dtd-text does not support
+      conditional sections.
+    </p><p>
+      <table border="0">
+        <tr>
+          <td>Hackage:</td>
+          <td><a href="http://hackage.haskell.org/package/dtd-text"
+                 >http://hackage.haskell.org/package/dtd-text</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Darcs repo:&nbsp;</td>
+          <td><a href="http://code.haskell.org/dtd/dtd-text"
+                 >http://code.haskell.org/dtd/dtd-text</a>
+          </td>
+        </tr>
+      </table>
+    </p>
+  </dd>
+</dl>
+</body>
+<!--
+Local variables:
+mode: html
+End:
+-->
+</html>
